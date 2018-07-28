@@ -23,6 +23,8 @@ target_language = ''
 # Reads all messages sent to it, determines the language and translates to or from target_language
 def auto_translate(bot, update):
     global target_language
+    if target_language == '':
+        bot.send_message(chat_id=update.message.chat_id, text='Set language first with /set_target_language <2 letter language code>')
     l = client.detect_language(update.message.text)
     language = l['language']
     if language == 'en':
