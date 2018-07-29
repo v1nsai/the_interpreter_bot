@@ -1,14 +1,19 @@
 import logging
 import telegram
 import os
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler, Filters
+import html
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from google.cloud import translate
 
+# Setup evil evil global vars
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+target_language = ''
 
-# Set API tokens
+# Make the bot talk to just me and my friends, sorry I'd share if Google were free!
+allowed_ids = open('/Users/doctor_ew/allowed_ids.txt').read().splitlines()
+allowed_ids = [int(i) for i in allowed_ids]
+
+# Set API tokens, I had issues with setting the var in ~/.profile
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/doctor_ew/the-interpreter-bot-d5dad33f5ff8.json"
 bot_token = open('/Users/doctor_ew/the-interpreter-bot-api-key.txt', 'r').read().rstrip('\n')
 
@@ -18,11 +23,9 @@ bot = telegram.Bot(token=bot_token)
 updater = Updater(token=bot_token)
 dispatcher = updater.dispatcher
 
-target_language = ''
-
 # Reads all messages sent to it, determines the language and translates to or from target_language
 def auto_translate(bot, update):
-    if update.message.chat_id not in [309340675, -185960933]:
+    if update.message.chat_id not in allowed_ids:
         bot.send_message(chat_id=update.message.chat_id, text="Sorry I'm not allowed to talk to strangers.  Send a message to @doctor_ew to learn more about me")
         return
     global target_language
@@ -35,11 +38,11 @@ def auto_translate(bot, update):
         trans = client.translate(update.message.text, target_language=target_language)
     if language == target_language:
         trans = client.translate(update.message.text, target_language='en')
-    bot.send_message(chat_id=update.message.chat_id, text=trans['translatedText'])
+    bot.send_message(chat_id=update.message.chat_id, text=html.unescape(trans['translatedText']))
 
 # Set the language to translate to and from
 def set_target_language(bot, update, args):
-    if update.message.chat_id not in [309340675, -185960933]:
+    if update.message.chat_id not in allowed_ids:
         bot.send_message(chat_id=update.message.chat_id,
                          text="Sorry I'm not allowed to talk to strangers.  Send a message to @doctor_ew to learn more about me")
         return
@@ -60,3 +63,4 @@ dispatcher.add_handler(set_target_language_handler)
 
 # Starts listening for messages until the script is stopped
 updater.start_polling()
+updater.idle()
