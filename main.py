@@ -3,19 +3,19 @@ import telegram
 import os
 import html
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from google.cloud import translate
+from google.cloud import translate_v2 as translate
 
 # Setup evil evil global vars
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 target_language = ''
 
 # Make the bot talk to just me and my friends, sorry I'd share if Google were free!
-allowed_ids = open('/Users/doctor_ew/allowed_ids.txt').read().splitlines()
+allowed_ids = open('allowed_ids.txt').read().splitlines()
 allowed_ids = [int(i) for i in allowed_ids]
 
 # Set API tokens, I had issues with setting the var in ~/.profile
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/doctor_ew/the-interpreter-bot-d5dad33f5ff8.json"
-bot_token = open('/Users/doctor_ew/the-interpreter-bot-api-key.txt', 'r').read().rstrip('\n')
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="the-interpreter-bot-d5dad33f5ff8.json"
+bot_token = open('the-interpreter-bot-api-key.txt', 'r').read().rstrip('\n')
 
 # Instantiates clients for Google Translate and Telegram
 client = translate.Client()
@@ -24,13 +24,13 @@ updater = Updater(token=bot_token)
 dispatcher = updater.dispatcher
 
 # Reads all messages sent to it, determines the language and translates to or from target_language
-def auto_translate(bot, update):
+def auto_translate(update, context):
     if update.message.chat_id not in allowed_ids:
-        bot.send_message(chat_id=update.message.chat_id, text="Sorry I'm not allowed to talk to strangers.  Send a message to @doctor_ew to learn more about me")
+        context.bot.send_message(chat_id=update.message.chat_id, text="Sorry I'm not allowed to talk to strangers.  Send a message to @doctor_ew to learn more about me")
         return
     global target_language
     if target_language == '':
-        bot.send_message(chat_id=update.message.chat_id, text='Set language with /set_target_language <2 letter language code>')
+        context.bot.send_message(chat_id=update.message.chat_id, text='Set language with /set_target_language <2 letter language code>')
         return
     l = client.detect_language(update.message.text)
     language = l['language']
@@ -38,7 +38,7 @@ def auto_translate(bot, update):
         trans = client.translate(update.message.text, target_language=target_language)
     if language == target_language:
         trans = client.translate(update.message.text, target_language='en')
-    bot.send_message(chat_id=update.message.chat_id, text=html.unescape(trans['translatedText']))
+    context.bot.send_message(chat_id=update.message.chat_id, text=html.unescape(trans['translatedText']))
 
 # Set the language to translate to and from
 def set_target_language(bot, update, args):
