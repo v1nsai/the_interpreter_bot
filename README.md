@@ -13,7 +13,7 @@ Activate it
 
 Install packages 
 
-`python3 -m pip install -r requirements.txt`
+`python3 -m pip install --upgrade python-telegram-bot google-cloud-translate`
 
 In order to get this working you'll need to create your own Telegram bot (I'd share mine but the Google Translate API isn't free) by following the [instructions here](https://core.telegram.org/bots#6-botfather) then put your API key in a txt file and edit the line that defines `bot_token` in the `main.py` file.  Next you'll need to set up the Google Translate API, the starting point [can be found here.](https://cloud.google.com/translate/), then point the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the JSON file containing your key.
 
