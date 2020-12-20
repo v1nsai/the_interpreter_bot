@@ -1,4 +1,4 @@
-the-interpreter-bot-api-key.txt
-the-interpreter-bot-d5dad33f5ff8.json
-allowed_ids.txt
+bot_token
+google_key.json
+allowed_ids
 pipenv/*

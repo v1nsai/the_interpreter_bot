@@ -14,8 +14,8 @@ allowed_ids = open('allowed_ids.txt').read().splitlines()
 allowed_ids = [int(i) for i in allowed_ids]
 
 # Set API tokens, I had issues with setting the var in ~/.profile
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="the-interpreter-bot-d5dad33f5ff8.json"
-bot_token = open('the-interpreter-bot-api-key.txt', 'r').read().rstrip('\n')
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="google_key.json"
+bot_token = open('bot_token.txt', 'r').read().rstrip('\n')
 
 # Instantiates clients for Google Translate and Telegram
 client = translate.Client()
