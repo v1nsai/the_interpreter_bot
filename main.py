@@ -5,19 +5,19 @@ import html
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from google.cloud import translate_v2 as translate
 
-# Setup evil evil global vars
+# Setup
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 target_language = ''
 
-# Make the bot talk to just me and my friends, sorry I'd share if Google were free!
+# Make the bot talk to just me and my friends, the Google Translate API is unfortunately not free
 allowed_ids = open('allowed_ids').read().splitlines()
 allowed_ids = [int(i) for i in allowed_ids]
 
-# Set API tokens, I had issues with setting the var in ~/.profile
+# Get API tokens
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="google_key.json"
 bot_token = open('bot_token', 'r').read().rstrip('\n')
 
-# Instantiates clients for Google Translate and Telegram
+# Instantiate clients for Google Translate and Telegram
 client = translate.Client()
 bot = telegram.Bot(token=bot_token)
 updater = Updater(token=bot_token, use_context=True)
@@ -61,3 +61,4 @@ dispatcher.add_handler(MessageHandler(Filters.text, auto_translate))
 # Starts listening for messages until the script is stopped
 updater.start_polling()
 updater.idle()
+print('Interpreter is listening...')
