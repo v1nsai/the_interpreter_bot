@@ -10,12 +10,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 target_language = ''
 
 # Make the bot talk to just me and my friends, the Google Translate API is unfortunately not free
-allowed_ids = open('allowed_ids').read().splitlines()
+allowed_ids = open('/app/allowed_ids').read().splitlines()
 allowed_ids = [int(i) for i in allowed_ids]
 
 # Get API tokens
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="google_key.json"
-bot_token = open('bot_token', 'r').read().rstrip('\n')
+bot_token = open('/app/bot_token', 'r').read().rstrip('\n')
 
 # Instantiate clients for Google Translate and Telegram
 client = translate.Client()

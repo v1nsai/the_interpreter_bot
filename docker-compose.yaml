@@ -1,0 +1,11 @@
+version: '3'
+services:
+  the_interpreter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./bot_token:/app/bot_token
+      - ./allowed_ids:/app/allowed_ids
+    ports:
+      - 8080:80
