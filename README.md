@@ -1,4 +1,5 @@
 # The Interpreter: A Telegram Bot
+<img src="https://github.com/v1nsai/the_interpreter_bot/assets/410443/205a8e6f-b361-4913-b500-fe7a81d9592b" width=256 height=256 />
 
 Huge credit and thanks goes out to everyone at [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) for
 making a Telegram bot wrapper that I could not refuse.  
