@@ -26,7 +26,7 @@ pycparser==2.20
 python-telegram-bot==13.1
 pytz==2020.4
 PyYAML==5.4
-requests==2.25.1
+requests==2.32.2
 rsa==4.7
 six==1.15.0
 soupsieve==2.1
