@@ -1,11 +1,14 @@
 version: '3'
 services:
   the_interpreter:
+    container_name: the_interpreter
     build:
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
     volumes:
       - ./bot_token:/app/bot_token
       - ./allowed_ids:/app/allowed_ids
+      - ./google_key.json:/app/google_key.json
     ports:
       - 8080:80
